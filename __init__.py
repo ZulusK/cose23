@@ -1,1 +1,1 @@
-import * from lab2
+import spiders  as spiders
