@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from src.message import Message
+from models.message import Message
 
 
 class MongoService:
