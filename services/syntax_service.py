@@ -24,7 +24,8 @@ class SyntaxService:
             word = nltk.WordNetLemmatizer().lemmatize(word, 'n')
 
             basic_words.append(word)
-        return basic_words
+        return ' '.join(basic_words)
 
     def remove_stopwords(self):
         return ' '.join([word for word in self.text.split() if word not in (stopwords.words('english'))])
+
