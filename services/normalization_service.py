@@ -3,7 +3,7 @@ from nltk.corpus import stopwords
 import nltk
 
 
-class SyntaxService:
+class NormalizationService:
 
     def __init__(self, text):
         self.text = text
