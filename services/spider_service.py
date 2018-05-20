@@ -1,7 +1,7 @@
 from scrapy.crawler import CrawlerProcess
 
-import plants.settings as crawler_settings
-import plants.spiders as ForumSpiders
+import forum_spider.settings as crawler_settings
+import forum_spider.spiders as ForumSpiders
 
 
 def load_comments():
