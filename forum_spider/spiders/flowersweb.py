@@ -18,7 +18,7 @@ class FlowerswebSpider(CrawlSpider):
     host = 'http://flowersweb.info'
 
     def parse(self, response):
-        next_page = response.xpath('//a[contains(@class,"forum-page-next")]/@href')
+        #next_page = response.xpath('//a[contains(@class,"forum-page-next")]/@href')
         return self.parse_forum(response)
         # yield response.follow(response.urljoin(next_page.extract_first()))
 
@@ -50,7 +50,6 @@ class FlowerswebSpider(CrawlSpider):
         for name, xpath in self.fields.items():
             d[name] = comment.xpath(xpath).extract_first()
         d['url'] = url
-        print(d)
         return d
 
     def parse_thread(self, response):

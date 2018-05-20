@@ -7,6 +7,7 @@ class MongoPipeline(object):
 
     def open_spider(self, spider):
         self.db = MongoService()
+        self.db.drop()
 
     def close_spider(self, spider):
         self.db.close()

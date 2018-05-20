@@ -19,7 +19,9 @@ class MongoService:
     def get(self, key, value):
         response = []
         for rec in self.collection.find({key: value}):
-            response.append(Message(**rec))
+            d = dict(rec)
+            del(d['_id'])
+            response.append(Message(**d))
         return response
 
     def remove(self, id):
