@@ -1,6 +1,6 @@
 import re
 from nltk.corpus import stopwords
-import nltk
+import pymorphy2
 
 
 class NormalizationService:
@@ -18,14 +18,12 @@ class NormalizationService:
         basic_words = []
         trimmed_text = self.remove_punctuation()
         word_list = trimmed_text.split()
-
         for word in word_list:
-            word = nltk.WordNetLemmatizer().lemmatize(word, 'v')
-            word = nltk.WordNetLemmatizer().lemmatize(word, 'n')
-
-            basic_words.append(word)
+            morph = pymorphy2.MorphAnalyzer()
+            normalized = morph.parse(word)[0]
+            basic_words.append(normalized.normal_form)
         return ' '.join(basic_words)
 
     def remove_stopwords(self):
-        return ' '.join([word for word in self.text.split() if word not in (stopwords.words('english'))])
+        return ' '.join([word for word in self.text.split() if word not in (stopwords.words('russian'))])
 
