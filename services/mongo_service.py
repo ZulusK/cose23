@@ -30,3 +30,6 @@ class MongoService:
             response.append(rec)
         return response
 
+    def drop(self):
+        self.collection.drop()
+
