@@ -14,7 +14,9 @@ class FlowerswebSpider(CrawlSpider):
     fields = {
         'author_name': './@bx-author-name',
         'author_id': './@bx-author-id',
-        'date': './/td[contains(@class,"forum-cell-post")]//*[contains(@class,"forum-post-date")]/span/text()'
+        'date': './/td[contains(@class,"forum-cell-post")]//*[contains(@class,"forum-post-date")]/span/text()',
+        'message_text': './/div[@class="forum-post-entry"]/div[@class="forum-post-text"]/text()',
+        'message_id': './/div[@class="forum-post-entry"]/div[@class="forum-post-text"]/@id',
     }
     name = 'flowersweb'
     allowed_domains = ['flowersweb.info']
