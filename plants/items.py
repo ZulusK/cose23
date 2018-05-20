@@ -7,10 +7,9 @@
 
 import scrapy
 
-
-class PostItem(scrapy.Item):
+class CommentItem(scrapy.Item):
     """
-        define item structure post at forum
+        define item structure of comment at forum
     """
     author_id = scrapy.Field()
     author_name=scrapy.Field()
@@ -18,3 +17,4 @@ class PostItem(scrapy.Item):
     text = scrapy.Field()
     url = scrapy.Field()
     topic_id = scrapy.Field()
+
