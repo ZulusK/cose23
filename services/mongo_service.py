@@ -11,7 +11,6 @@ class MongoService:
 
     def insert(self, obj):
         if isinstance(obj, Message):
-            print(obj.toJSON())
             self.collection.insert(obj.__dict__)
         else:
             print("wrong type")
@@ -24,3 +23,10 @@ class MongoService:
 
     def remove(self, id):
         self.collection.remove(id)
+
+    def get_all(self):
+        response = []
+        for rec in self.collection.find():
+            response.append(rec)
+        return response
+
