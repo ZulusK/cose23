@@ -1,28 +1,17 @@
 import pymongo
+from services.mongo_service import MongoService
+from models.message import Message
 
 
 class MongoPipeline(object):
-    collection_name = 'comments'
-
-    def __init__(self, mongo_uri, mongo_db):
-        self.mongo_uri = mongo_uri
-        self.mongo_db = mongo_db
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        return cls(
-            mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
-        )
 
     def open_spider(self, spider):
-        self.client = pymongo.MongoClient(self.mongo_uri)
-        self.db = self.client[self.mongo_db]
-        self.db[self.collection_name].drop()
+        self.db = MongoService()
+        self.db.drop()
 
     def close_spider(self, spider):
-        self.client.close()
+        self.db.close()
 
     def process_item(self, item, spider):
-        self.db[self.collection_name].insert_one(dict(item))
+        self.db.insert(Message(**item))
         return item

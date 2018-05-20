@@ -40,20 +40,28 @@
 
     <script id="resultTemplate" type="x-tmpl-mustache">
         {%raw%}
-            <table class="table">
+            <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>Author name</th>
+                        <th>Author id</th>
                         <th>Date</th>
-                        <th style="white-space:nowrap;">Topic id</th>
-                        <th class="col">Text</th>
+                        <th>Message id</th>
+                        <th>Url</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#result}}
                         <tr>
+                            <td>{{author_name}}</td>
+                            <td>{{author_id}}</td>
                             <td>{{date}}</td>
-                            <td>{{topic_id}}</td>
+                            <td>{{message_id}}</td>
+                            <td>{{url}}</td>
                             <td>{{text}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"">{{message_text}}</td>
                         </tr>
                     {{/result}}
                 </tbody>
