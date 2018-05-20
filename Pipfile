@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 scrapy = "*"
 flask = "*"
+pymongo = "*"
 
 [dev-packages]
 
