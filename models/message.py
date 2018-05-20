@@ -2,12 +2,24 @@ import json
 
 
 class Message():
-    def __init__(self, author, date, text, topic_id):
-        self.author = author
+    def __init__(self, author_name, author_id, date, message_text, message_id, url):
+        self.author_name = author_name
+        self.author_id = author_id
         self.date = date
-        self.text = text
-        self.topic_id = topic_id
+        self.message_text = message_text
+        self.message_id = message_id
+        self.url = url
 
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__,
-                          sort_keys=True, indent=1)
+    def to_dict(self):
+        return vars(self)
+
+    @staticmethod
+    def toJSON(var):
+        if var is Message:
+            return json.dumps(var.to_dict())
+        else:
+            dicts = []
+            for v in var:
+                dicts.append(v.to_dict())
+            return json.dumps(dicts)
+

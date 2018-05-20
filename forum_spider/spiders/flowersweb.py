@@ -2,12 +2,6 @@ from scrapy.loader import ItemLoader
 from scrapy.loader.processors import TakeFirst
 from scrapy.spiders import CrawlSpider
 
-from ..items import CommentItem
-
-
-class PostLoader(ItemLoader):
-    default_output_processor = TakeFirst()
-
 
 class FlowerswebSpider(CrawlSpider):
     comment_xpath = "//table[contains(@class,'forum-post-table')]"
@@ -52,11 +46,12 @@ class FlowerswebSpider(CrawlSpider):
         :param url url from which comment has crawled
         :return: parsed PostItem
         """
-        loader = PostLoader(CommentItem(), comment)
+        d = {}
         for name, xpath in self.fields.items():
-            loader.add_xpath(name, xpath)
-        loader.add_value('url', url)
-        return loader.load_item()
+            d[name] = comment.xpath(xpath).extract_first()
+        d['url'] = url
+        print(d)
+        return d
 
     def parse_thread(self, response):
         """
