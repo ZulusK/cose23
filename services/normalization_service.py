@@ -27,3 +27,9 @@ class NormalizationService:
     def remove_stopwords(self):
         return ' '.join([word for word in self.text.split() if word not in (stopwords.words('russian'))])
 
+    def normalize_text(self):
+        self.text = self.to_lowercase()
+        self.text = self.remove_stopwords()
+        self.text = self.to_basic_morph()
+        return self.text
+
