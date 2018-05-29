@@ -8,6 +8,11 @@ class CommentDB(DBDriver):
     def __init__(self):
         DBDriver.__init__(self, MONGODB_COMMENT_COLLECTION)
 
+    def insert(self, obj):
+        obj['user_id'] = ObjectId(obj['user_id'])
+        obj['topic_id'] = ObjectId(obj['topic_id'])
+        return DBDriver.insert(self, obj)
+
     def get_by_user_id(self, user_id):
         self.find({'user_id': ObjectId(user_id)})
 

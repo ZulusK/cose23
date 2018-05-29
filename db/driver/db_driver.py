@@ -11,10 +11,13 @@ class DBDriver:
         return self.collection.insert_one(obj).inserted_id
 
     def find(self, query):
-        return self.collection.find(query)
+        return list(self.collection.find(query))
+
+    def find_one(self, query):
+        return self.collection.find_one(query)
 
     def get_all(self):
-        return self.collection.find({})
+        return list(self.collection.find({}))
 
     def get_by_id(self, id):
         return self.collection.find_one({u'_id': ObjectId(id)})
