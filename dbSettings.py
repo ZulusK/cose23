@@ -1,3 +1,0 @@
-MONGODB_URI = 'mongodb://localhost:27017'
-MONGODB_DATABASE = 'Cose2'
-MONGODB_COLLECTION_NAME = 'comments'
