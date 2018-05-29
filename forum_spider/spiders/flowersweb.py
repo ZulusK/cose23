@@ -5,6 +5,7 @@ from scrapy.spiders import CrawlSpider
 
 class FlowerswebSpider(CrawlSpider):
     comment_xpath = "//table[contains(@class,'forum-post-table')]"
+    topic_name_xpath = "//h1/text()"
     fields = {
         'author_name': './@bx-author-name',
         'author_id': './@bx-author-id',
@@ -39,7 +40,7 @@ class FlowerswebSpider(CrawlSpider):
             except Exception as e:
                 print("Error\n" + e)
 
-    def parse_comment(self, comment, url):
+    def parse_comment(self, comment, url, topic_name):
         """
         parse single post from forum
         :param comment: xpath selector with post
@@ -50,6 +51,7 @@ class FlowerswebSpider(CrawlSpider):
         for name, xpath in self.fields.items():
             d[name] = comment.xpath(xpath).extract_first()
         d['url'] = url
+        d['topic_name'] = topic_name
         return d
 
     def parse_thread(self, response):
@@ -60,11 +62,12 @@ class FlowerswebSpider(CrawlSpider):
         """
 
         # extract all comments from page
+        topic_name = response.xpath(self.topic_name_xpath).extract_first()
         comments_list = response.xpath(self.comment_xpath)
         print("Find %d comments at page %s" % (len(comments_list), response.url))
         # parse all comments
         for comment in comments_list:
-            yield self.parse_comment(comment, response.url)
+            yield self.parse_comment(comment, response.url, topic_name)
         # find link to next page and follow it
         try:
             next_page = response.xpath('//a[contains(@class,"forum-page-next")]/@href').extract_first()
