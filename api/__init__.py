@@ -1,0 +1,4 @@
+from .json_encoder import JSONEncoder
+from .user_resource import config_user_resources
+from .topic_resource import config_topic_resources
+from .comment_resource import config_comment_resources

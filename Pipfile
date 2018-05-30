@@ -5,8 +5,8 @@ name = "pypi"
 
 [packages]
 scrapy = "*"
-flask = "*"
 pymongo = "*"
+flask-restful = "*"
 
 [dev-packages]
 pylint = "*"
