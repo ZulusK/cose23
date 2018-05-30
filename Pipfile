@@ -4,8 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-Scrapy = "*"
+scrapy = "*"
 pymongo = "*"
+flask-restful = "*"
 
 [dev-packages]
 pylint = "*"
