@@ -14,7 +14,7 @@ class UserDB(DBDriver):
     def add_topic(self, id, topic_id):
         topic_id = ObjectId(topic_id)
         user = self.get_by_id(id)
-        for id in user['topic_ids']:
-            if id == topic_id:
+        for contained_id in user['topic_ids']:
+            if contained_id == topic_id:
                 return
-        self.update_by_id(id, {'$push': {'topic_ids': ObjectId(topic_id)}})
+        self.update_by_id(id, {'$push': {'topic_ids': topic_id}})
