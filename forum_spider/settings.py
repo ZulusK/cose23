@@ -10,6 +10,4 @@ COOKIES_ENABLED = False
 ITEM_PIPELINES = {
     'forum_spider.pipelines.MongoPipeline': 300,
 }
-MONGO_URI = 'mongodb://localhost:27017'
-MONGO_DATABASE = 'comments'
-LOG_ENABLED=False
+LOG_ENABLED=True

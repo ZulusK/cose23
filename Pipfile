@@ -5,10 +5,12 @@ name = "pypi"
 
 [packages]
 scrapy = "*"
-flask = "*"
 pymongo = "*"
+flask-restful = "*"
 
 [dev-packages]
+pylint = "*"
+rope = "*"
 
 [requires]
 python_version = "3.6"

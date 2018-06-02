@@ -2,15 +2,10 @@ from scrapy.loader import ItemLoader
 from scrapy.loader.processors import TakeFirst
 from scrapy.spiders import CrawlSpider
 
-from ..items import CommentItem
-
-
-class PostLoader(ItemLoader):
-    default_output_processor = TakeFirst()
-
 
 class FlowerswebSpider(CrawlSpider):
     comment_xpath = "//table[contains(@class,'forum-post-table')]"
+    topic_name_xpath = "//h1/text()"
     fields = {
         'author_name': './@bx-author-name',
         'author_id': './@bx-author-id',
@@ -24,7 +19,7 @@ class FlowerswebSpider(CrawlSpider):
     host = 'http://flowersweb.info'
 
     def parse(self, response):
-        next_page = response.xpath('//a[contains(@class,"forum-page-next")]/@href')
+        #next_page = response.xpath('//a[contains(@class,"forum-page-next")]/@href')
         return self.parse_forum(response)
         # yield response.follow(response.urljoin(next_page.extract_first()))
 
@@ -45,18 +40,19 @@ class FlowerswebSpider(CrawlSpider):
             except Exception as e:
                 print("Error\n" + e)
 
-    def parse_comment(self, comment, url):
+    def parse_comment(self, comment, url, topic_name):
         """
         parse single post from forum
         :param comment: xpath selector with post
         :param url url from which comment has crawled
         :return: parsed PostItem
         """
-        loader = PostLoader(CommentItem(), comment)
+        d = {}
         for name, xpath in self.fields.items():
-            loader.add_xpath(name, xpath)
-        loader.add_value('url', url)
-        return loader.load_item()
+            d[name] = comment.xpath(xpath).extract_first()
+        d['url'] = url
+        d['topic_name'] = topic_name
+        return d
 
     def parse_thread(self, response):
         """
@@ -66,11 +62,12 @@ class FlowerswebSpider(CrawlSpider):
         """
 
         # extract all comments from page
+        topic_name = response.xpath(self.topic_name_xpath).extract_first()
         comments_list = response.xpath(self.comment_xpath)
         print("Find %d comments at page %s" % (len(comments_list), response.url))
         # parse all comments
         for comment in comments_list:
-            yield self.parse_comment(comment, response.url)
+            yield self.parse_comment(comment, response.url, topic_name)
         # find link to next page and follow it
         try:
             next_page = response.xpath('//a[contains(@class,"forum-page-next")]/@href').extract_first()
