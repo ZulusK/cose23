@@ -19,7 +19,7 @@ def to_basic_morph(text):
     word_list = trimmed_text.split()
     morph = pymorphy2.MorphAnalyzer()
     for word in word_list:
-        normalized = sorted(morph.parse(word), key=lambda x: x.score)[0]
+        normalized = max(morph.parse(word), key=lambda x: x.score)
         basic_words.append(normalized.normal_form)
     return ' '.join(basic_words)
 
