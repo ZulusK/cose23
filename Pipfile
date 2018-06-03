@@ -9,6 +9,10 @@ pymongo = "*"
 flask-restful = "*"
 nltk = "*"
 "pymorphy2" = "*"
+sklearn = "*"
+wordcloud = "*"
+matplotlib = "*"
+pandas = "*"
 
 [dev-packages]
 pylint = "*"

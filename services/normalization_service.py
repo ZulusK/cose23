@@ -1,14 +1,16 @@
 import re
 from nltk.corpus import stopwords
+import nltk
 import pymorphy2
 
+nltk.download('stopwords')
 
 def to_lowercase(text):
     return text.lower()
 
 
 def remove_punctuation(text):
-    return re.sub(r'[^\w\s]', '', text)
+    return re.sub(r'[^\w\s]', ' ', text)
 
 
 def to_basic_morph(text):
@@ -22,9 +24,27 @@ def to_basic_morph(text):
     return ' '.join(basic_words)
 
 
+def remove_artifacts(post):
+    post = re.sub(r'https?://[\S]+', ' url ', post)
+    post = re.sub(r'\d+ ?гг?', ' date ', post)
+    post = re.sub(r'\d+:\d+(:\d+)?', ' time ', post)
+    post = re.sub(r'@\w+', ' tname ', post)
+    post = re.sub(r'#\w+', ' htag ', post)
+    post = re.sub(r'[\W]+', ' ', post)
+    return post
+
+
 def remove_stopwords(text, lang):
     return ' '.join([word for word in text.split() if word not in (stopwords.words(lang))])
 
 
 def normalize_text(text, language='russian'):
-    return to_basic_morph(remove_stopwords(to_lowercase(text)))
+    data = to_lowercase(text)
+    data = remove_stopwords(data, language)
+    data = to_basic_morph(data)
+    return data
+
+
+def normalize_data(data):
+    for item in data:
+        yield normalize_text(item)
