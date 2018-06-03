@@ -1,4 +1,6 @@
 import math
+import datetime
+import functools
 from flask_restful import Resource, reqparse
 from bson.objectid import ObjectId
 from db import CommentDB
@@ -38,8 +40,118 @@ class CommentResource(Resource):
 
         return responce
 
+class CommentTimestampResource(Resource):
+
+    def get(self):
+        parcer = reqparse.RequestParser()
+        parcer.add_argument('user_id', default=None)
+        parcer.add_argument('topic_id', default=None)
+        args = parcer.parse_args()
+
+        query = {}
+        if args['user_id'] != None:
+            query['user_id'] = args['user_id']
+        if args['topic_id'] != None:
+            query['topic_id'] = args['topic_id']
+
+        comments = db.find(query)
+        responce = []
+
+        for comment in comments:
+            date = comment['date'][:comment['date'].find(' ')]
+            finded_indexes = [i for i,x in enumerate(responce) if x['date'] == date]
+            index = None
+            if len(finded_indexes) == 0:
+                responce.append({
+                    'date': date,
+                    'count': 0
+                })
+                index = len(responce) - 1
+            else:
+                index = finded_indexes[0]
+            responce[index]['count'] += 1
+
+        return sorted(responce, key=functools.cmp_to_key(compare_date))
+
+class CommentTopUsers(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('topic_id', type=str)
+        topic_id = parser.parse_args()['topic_id']
+
+        comments = None
+        if topic_id != None:
+            comments = db.get_by_topic_id(topic_id)
+        else:
+            comments = db.get_all()
+
+        responce = []
+
+        for comment in comments:
+            user_id = comment['user_id']
+            finded_indexes = [i for i,x in enumerate(responce) if x['user_id'] == user_id]
+            index = None
+            if len(finded_indexes) == 0:
+                responce.append({
+                    'user_id': user_id,
+                    'count': 0
+                })
+                index = len(responce) - 1
+            else:
+                index = finded_indexes[0]
+            responce[index]['count'] += 1
+
+        return sorted(responce, key=lambda x: x['count'], reverse=True)
+
+class CommentTopTopics(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('user_id', type=str)
+        user_id = parser.parse_args()['user_id']
+
+        comments = None
+        if user_id != None:
+            comments = db.get_by_user_id(user_id)
+        else:
+            comments = db.get_all()
+
+        responce = []
+
+        for comment in comments:
+            topic_id = comment['topic_id']
+            finded_indexes = [i for i,x in enumerate(responce) if x['topic_id'] == topic_id]
+            index = None
+            if len(finded_indexes) == 0:
+                responce.append({
+                    'topic_id': topic_id,
+                    'count': 0
+                })
+                index = len(responce) - 1
+            else:
+                index = finded_indexes[0]
+            responce[index]['count'] += 1
+
+        return sorted(responce, key=lambda x: x['count'], reverse=True)
+
+def str_to_datetime(date_str):
+    date = {}
+    strs = date_str.split('.')
+    date['year'] = int(strs[2])
+    date['month'] = int(strs[1])
+    date['day'] = int(strs[0])
+    return date
+
+def compare_date(obj1, obj2):
+    date1 = str_to_datetime(obj1['date'])
+    date2 = str_to_datetime(obj2['date'])
+    if date1['year'] == date2['year']:
+        if date1['month'] == date2['month']:
+            return date1['day'] - date2['day']
+        return date1['month'] - date2['month']
+    return date1['year'] - date2['year']
+
 def config_comment_resources(api):
-    api.add_resource(
-        CommentResource,
-        '/comments'
-    )
+    api.add_resource(CommentResource, '/comments')
+    api.add_resource(CommentTimestampResource, '/comments/timestamp')
+    api.add_resource(CommentTopTopics, '/comments/top/topics')
+    api.add_resource(CommentTopUsers, '/comments/top/users')
