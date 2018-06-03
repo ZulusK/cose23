@@ -50,9 +50,9 @@ class CommentTimestampResource(Resource):
 
         query = {}
         if args['user_id'] != None:
-            query['user_id'] = args['user_id']
+            query['user_id'] = ObjectId(args['user_id'])
         if args['topic_id'] != None:
-            query['topic_id'] = args['topic_id']
+            query['topic_id'] = ObjectId(args['topic_id'])
 
         comments = db.find(query)
         responce = []
