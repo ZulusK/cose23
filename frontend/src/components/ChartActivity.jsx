@@ -7,7 +7,6 @@ import { withStyles, withTheme } from 'material-ui/styles';
 const styles = () => ({
     progressContainer: {
         width: '100%',
-        height: '100%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
@@ -46,7 +45,7 @@ class ChartActivity extends React.Component {
         )
 
         return (
-            <ResponsiveContainer>
+            <ResponsiveContainer width='100%' aspect={4.0/2.0}>
                 <LineChart data={this.state.data}>
                     <CartesianGrid />
                     <XAxis dataKey='date' />

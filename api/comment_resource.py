@@ -3,10 +3,12 @@ import datetime
 import functools
 from flask_restful import Resource, reqparse
 from bson.objectid import ObjectId
-from db import CommentDB
+from db import CommentDB, UserDB, TopicDB
 from .settings import ITEMS_PER_PAGE
 
 db = CommentDB()
+userDb = UserDB()
+topicDb = TopicDB()
 
 class CommentResource(Resource):
     def get(self):
@@ -94,7 +96,8 @@ class CommentTopUsers(Resource):
             if len(finded_indexes) == 0:
                 responce.append({
                     'user_id': user_id,
-                    'count': 0
+                    'count': 0,
+                    'user_name': userDb.get_by_id(user_id)['name']
                 })
                 index = len(responce) - 1
             else:
@@ -124,7 +127,8 @@ class CommentTopTopics(Resource):
             if len(finded_indexes) == 0:
                 responce.append({
                     'topic_id': topic_id,
-                    'count': 0
+                    'count': 0,
+                    'topic_name': topicDb.get_by_id(topic_id)['name']
                 })
                 index = len(responce) - 1
             else:

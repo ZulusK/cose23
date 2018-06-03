@@ -8,27 +8,32 @@ import { withStyles, withTheme } from 'material-ui/styles';
 const styles = (theme) => ({
     container: {
         width: '100%',
-        height: '100%',
+        position: 'relative',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'center'
     },
     plot: {
-        height: '100%',
         width: '60%',
-        marginRight: '10px'
+        minWidth: '355px',
+        marginLeft: '0',
+        position: 'relative',
+        height: '100%',
+        marginRight: '20px'
     },
     links: {
-        height: '100%',
-        flex: '1'
+        position: 'relative',
+        flex: '1',
+        minWidth: '50px'
     },
     link: {
         width: '100%',
-        overflow: 'auto',
-        padding: '10px',
+        padding: '5px',
         display: 'block',
         color: theme.palette.text.primary,
         'text-decoration': 'none',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
         '&:hover': {
             color: theme.palette.primary.contrastText,
             backgroundColor: theme.palette.primary.main
@@ -81,7 +86,7 @@ class ChartTopTopics extends React.Component {
         return (
             <div className={classes.container}>
                 <div className={classes.plot}>
-                    <ResponsiveContainer>
+                    <ResponsiveContainer width='100%' aspect={4.0 / 3.0}>
                         <BarChart data={this.state.data}>
                             <CartesianGrid />
                             <XAxis dataKey='topic_name' hide={true} />

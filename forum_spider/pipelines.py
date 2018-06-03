@@ -1,5 +1,5 @@
 import pymongo
-from cose23.db import DBLoader
+from db import DBLoader
 
 
 class MongoPipeline(object):
