@@ -19,7 +19,7 @@ def to_basic_morph(text):
     word_list = trimmed_text.split()
     morph = pymorphy2.MorphAnalyzer()
     for word in word_list:
-        normalized = morph.parse(word)[0]
+        normalized = sorted(morph.parse(word), key=lambda x: x.score)[0]
         basic_words.append(normalized.normal_form)
     return ' '.join(basic_words)
 
@@ -35,7 +35,7 @@ def remove_artifacts(post):
 
 
 def remove_stopwords(text, lang):
-    return ' '.join([word for word in text.split() if word not in (stopwords.words(lang))])
+    return ' '.join([word for word in text.split() if word not in (stopwords.words('russian'))])
 
 
 def normalize_text(text, language='russian'):
@@ -47,6 +47,6 @@ def normalize_text(text, language='russian'):
 
 def normalize_data(data):
     for idx, item in enumerate(data):
-        print("Processed %s" % idx)
+        # print("Processed %s" % idx)
         if (item != None):
             yield normalize_text(item)
