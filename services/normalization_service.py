@@ -46,5 +46,7 @@ def normalize_text(text, language='russian'):
 
 
 def normalize_data(data):
-    for item in data:
-        yield normalize_text(item)
+    for idx, item in enumerate(data):
+        print("Processed %s" % idx)
+        if (item != None):
+            yield normalize_text(item)
