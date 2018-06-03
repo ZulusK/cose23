@@ -3,33 +3,28 @@ from nltk.corpus import stopwords
 import pymorphy2
 
 
-class NormalizationService:
+def to_lowercase(text):
+    return text.lower()
 
-    def __init__(self, text):
-        self.text = text
 
-    def to_lowercase(self):
-        return self.text.lower()
+def remove_punctuation(text):
+    return re.sub(r'[^\w\s]', '', text)
 
-    def remove_punctuation(self):
-        return re.sub(r'[^\w\s]', '', self.text)
 
-    def to_basic_morph(self):
-        basic_words = []
-        trimmed_text = self.remove_punctuation()
-        word_list = trimmed_text.split()
-        for word in word_list:
-            morph = pymorphy2.MorphAnalyzer()
-            normalized = morph.parse(word)[0]
-            basic_words.append(normalized.normal_form)
-        return ' '.join(basic_words)
+def to_basic_morph(text):
+    basic_words = []
+    trimmed_text = remove_punctuation(text)
+    word_list = trimmed_text.split()
+    morph = pymorphy2.MorphAnalyzer()
+    for word in word_list:
+        normalized = morph.parse(word)[0]
+        basic_words.append(normalized.normal_form)
+    return ' '.join(basic_words)
 
-    def remove_stopwords(self):
-        return ' '.join([word for word in self.text.split() if word not in (stopwords.words('russian'))])
 
-    def normalize_text(self):
-        self.text = self.to_lowercase()
-        self.text = self.remove_stopwords()
-        self.text = self.to_basic_morph()
-        return self.text
+def remove_stopwords(text, lang):
+    return ' '.join([word for word in text.split() if word not in (stopwords.words(lang))])
 
+
+def normalize_text(text, language='russian'):
+    return to_basic_morph(remove_stopwords(to_lowercase(text)))
