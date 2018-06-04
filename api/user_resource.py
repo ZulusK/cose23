@@ -27,6 +27,7 @@ class UserTopicsResource(Resource):
         responce['items_per_page'] = ITEMS_PER_PAGE
         responce['page'] = args['page']
         responce['num_of_pages'] = math.ceil(len(user['topic_ids'] / ITEMS_PER_PAGE))
+        responce['total_num_of_items'] = len(user['topic_ids'])
 
         first = args['page'] * ITEMS_PER_PAGE
         last = (args['page'] + 1) * ITEMS_PER_PAGE

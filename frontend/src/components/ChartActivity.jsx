@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts'
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 import CircularProgress from 'material-ui/Progress/CircularProgress';
 import { withStyles, withTheme } from 'material-ui/styles';
 
@@ -51,6 +51,7 @@ class ChartActivity extends React.Component {
                     <XAxis dataKey='date' />
                     <YAxis />
                     <Line dataKey='count' fill={this.props.theme.palette.primary.main} />
+                    <Tooltip/>
                 </LineChart>
             </ResponsiveContainer>
         );
@@ -73,28 +74,24 @@ async function rebaseData(data) {
     if (getValue === undefined) return data
 
     let currValue = getValue(data[0].date)
-    let currStr = data[0].date
     let sum = data[0].count
 
     for (let i = 1; i < data.length; i++) {
         if (getValue(data[i].date) !== currValue) {
             r.push({
-                date: getStr(currStr),
+                date: getStr(data[i-1].date),
                 count: sum
             })
             currValue = getValue(data[i].date)
-            currStr = data[i].date
             sum = data[i].count
-            if (i === data.length - 1) {
-                r.push({
-                    date: getStr(currStr),
-                    count: sum
-                })
-            }
         } else {
             sum += data[i].count
         }
     }
+    r.push({
+        date: getStr(data[data.length - 1].date),
+        count: sum
+    })
 
     return r
 }

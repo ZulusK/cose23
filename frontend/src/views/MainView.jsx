@@ -1,27 +1,28 @@
 import React, { Component } from 'react'
 import Chart from '../components/ChartTopTopics'
-import { withStyles, withTheme } from 'material-ui/styles'
+import { withStyles, withTheme } from 'material-ui/styles';
 import Paper from 'material-ui/Paper'
-import ChartActivity from '../components/ChartActivity.jsx'
-import ChartTopTopics from '../components/ChartTopTopics.jsx'
-import ChartTopUsers from '../components/ChartTopUsers.jsx'
+import ChartActivity from '../components/ChartActivity'
+import ChartTopTopics from '../components/ChartTopTopics'
+import ChartTopUsers from '../components/ChartTopUsers'
 
 
 const styles = (theme) => ({
     container: {
         width: '100%',
         position: 'relative',
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        margin: '0 auto'
     },
-    element: {
-        position: 'relative',
-        width: '100%',
-        marginBottom: '15px',
-        padding: '15px',
-        color: theme.palette.text.main
+    smallPlot: {
+        padding: '20px',
+        width: '550px',
+        margin: '10px'
     },
-    plot: {
-        position: 'relative',
-        width: '100%',
+    h: {
+        marginBottom: '20px'
     }
 })
 
@@ -30,24 +31,18 @@ class MainView extends Component {
         let { theme, classes } = this.props
 
         return (
-            <div className='container'>
-                <Paper className={classes.element}>
-                    <h1 style={{ marginBottom   : '15px' }}>Activity of users</h1>
-                    <div className={classes.plot}>
-                        <ChartActivity />
-                    </div>
+            <div className={classes.container}>
+                <Paper className={classes.smallPlot}>
+                    <h1 className={classes.h}>Top 10 topics</h1>
+                    <ChartTopTopics/>
                 </Paper>
-                <Paper className={classes.element}>
-                    <h1 style={{ marginBottom   : '15px' }}>Top 10 topics</h1>
-                    <div className={classes.plot}>
-                        <ChartTopTopics />
-                    </div>
+                <Paper className={classes.smallPlot}>
+                    <h1 className={classes.h}>Top 10 users</h1>
+                    <ChartTopUsers/>
                 </Paper>
-                <Paper className={classes.element}>
-                    <h1 style={{ marginBottom   : '15px' }}>Top 10 users</h1>
-                    <div className={classes.plot}>
-                        <ChartTopUsers />
-                    </div>
+                <Paper className={classes.smallPlot}>
+                    <h1 className={classes.h}>User`s activity</h1>
+                    <ChartActivity/>
                 </Paper>
             </div>
         );

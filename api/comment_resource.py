@@ -35,10 +35,15 @@ class CommentResource(Resource):
         responce['page'] = args['page']
         responce['items_per_page'] = ITEMS_PER_PAGE
         responce['num_of_pages'] = math.ceil(len(comments) / ITEMS_PER_PAGE)
+        responce['total_num_of_items'] = len(responce)
 
         first = args['page'] * ITEMS_PER_PAGE
         last = (args['page']+1) * ITEMS_PER_PAGE
         responce['comments'] = comments[first:last]
+
+        for r in responce['comments']:
+            r['user_name'] = userDb.get_by_id(r['user_id'])['name']
+            r['topic_name'] = userDb.get_by_id(r['topic_id'])['name']
 
         return responce
 
