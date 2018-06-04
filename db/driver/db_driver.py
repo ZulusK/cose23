@@ -25,5 +25,8 @@ class DBDriver:
     def update_by_id(self, id, changes):
         self.collection.find_one_and_update({u'_id': ObjectId(id)}, changes)
 
+    def count(self, query):
+        return self.collection.count(query)
+
     def drop(self):
         self.collection.drop()
