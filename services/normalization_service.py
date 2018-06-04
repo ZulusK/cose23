@@ -40,8 +40,8 @@ def remove_stopwords(text, lang):
 
 def normalize_text(text, language='russian'):
     data = to_lowercase(text)
-    data = remove_stopwords(data, language)
     data = to_basic_morph(data)
+    data = remove_stopwords(data, language)
     return data
 
 

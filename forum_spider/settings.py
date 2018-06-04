@@ -10,4 +10,4 @@ COOKIES_ENABLED = False
 ITEM_PIPELINES = {
     'forum_spider.pipelines.MongoPipeline': 300,
 }
-LOG_ENABLED=True
+LOG_ENABLED=False
