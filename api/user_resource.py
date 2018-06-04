@@ -23,6 +23,7 @@ class UserResource(Resource):
         user = db.get_by_id(id)
         if user == None:
             abort(404, message='No such user with id %s' % (id))
+        user['num_of_topics'] = len(user['topic_ids'])
         user.pop('topic_ids', None)
         user['num_of_messages'] = commentDb.count(query)
         return user
