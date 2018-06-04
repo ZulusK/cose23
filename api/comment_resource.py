@@ -47,6 +47,21 @@ class CommentResource(Resource):
 
         return responce
 
+class CommentCountResource(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('user_id', type=str)
+        parser.add_argument('topic_id', type=str)
+        args = parser.parse_args()
+
+        query = {}
+        if args['user_id'] != None:
+            query['user_id'] = ObjectId(args['user_id'])
+        if args['topic_id'] != None:
+            query['topic_id'] = ObjectId(args['topic_id'])
+
+        return db.count(query)
+
 class CommentTimestampResource(Resource):
 
     def get(self):
@@ -164,3 +179,4 @@ def config_comment_resources(api):
     api.add_resource(CommentTimestampResource, '/comments/timestamp')
     api.add_resource(CommentTopTopics, '/comments/top/topics')
     api.add_resource(CommentTopUsers, '/comments/top/users')
+    api.add_resource(CommentCountResource, '/comments/count')
