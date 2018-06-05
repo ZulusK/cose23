@@ -1,11 +1,12 @@
 import math
 from bson.objectid import ObjectId
 from flask_restful import Resource, abort, reqparse
-from db import UserDB, CommentDB
+from db import UserDB, CommentDB, TopicDB
 from .settings import ITEMS_PER_PAGE
 
 db = UserDB()
 commentDb = CommentDB()
+topicDb = TopicDB()
 
 
 class UserResource(Resource):
@@ -26,6 +27,8 @@ class UserResource(Resource):
         user['num_of_topics'] = len(user['topic_ids'])
         user.pop('topic_ids', None)
         user['num_of_messages'] = commentDb.count(query)
+        if args['topic_id'] != None:
+            user['topic_name'] = topicDb.get_by_id(args['topic_id'])['name']
         return user
 
 

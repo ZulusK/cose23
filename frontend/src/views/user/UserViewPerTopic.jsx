@@ -91,6 +91,10 @@ class UserViewPerTopic extends Component {
                         {desc.id_from_forum}
                     </h2>
                     <h2>
+                        <span>Topic: </span>
+                        {desc.topic_name}
+                    </h2>
+                    <h2>
                         <span>Number of messages: </span>
                         {desc.num_of_messages}
                     </h2>

@@ -20,7 +20,7 @@ def vectorize(data):
     }
 
 
-def form_clusters(data, vectorized_data, clusters=1):
+def form_clusters(data, vectorized_data, clusters=8):
     km_model = KMeans(n_clusters=clusters)
     km_model.fit(vectorized_data["model"])
     clustering = collections.defaultdict(list)
@@ -41,11 +41,12 @@ def openPNG(name):
 def generate_cloud(data):
     vectorizer_data = vectorize(data)
     clustering = form_clusters(data, vectorizer_data)
+    print(len(clustering))
     # create coloring from image
     image = openPNG("mask.png")
     alice_colors = np.array(image)
     image_colors = ImageColorGenerator(alice_colors)
-    for ind in range(clustering.__len__()):
+    for ind in range(len(clustering)):
         wc = WordCloud(
             width=image.width,
             height=image.height,
@@ -53,7 +54,7 @@ def generate_cloud(data):
             normalize_plurals=False,
             mask=alice_colors,
             max_words=2000,
-            background_color="white")
+            background_color="black")
         wc.generate(' '.join(clustering[ind]))
         # create coloring from image
         wc.recolor(color_func=image_colors)

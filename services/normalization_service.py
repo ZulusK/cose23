@@ -3,7 +3,7 @@ from nltk.corpus import stopwords
 import nltk
 import pymorphy2
 
-nltk.download('stopwords')
+#nltk.download('stopwords')
 
 def to_lowercase(text):
     return text.lower()
